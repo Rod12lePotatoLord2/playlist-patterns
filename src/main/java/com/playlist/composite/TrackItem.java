@@ -8,42 +8,47 @@ import java.util.List;
  */
 public class TrackItem implements MediaItem {
 
-  /**
-   * Cria a folha a partir de uma faixa.
-   *
-   * @param track faixa envolvida. Não pode ser nula.
-   * @throws IllegalArgumentException se {@code track} for nula.
-   */
-  public TrackItem(Track track) {
-    throw new UnsupportedOperationException("Exercício 1: implemente o construtor de TrackItem");
-  }
+    private final Track track;
 
-  /**
-   * Devolve a faixa envolvida por esta folha.
-   *
-   * @return a faixa original.
-   */
-  public Track getTrack() {
-    throw new UnsupportedOperationException("Exercício 1: implemente TrackItem.getTrack");
-  }
+    /**
+     * Cria a folha a partir de uma faixa.
+     *
+     * @param track faixa envolvida. Não pode ser nula.
+     * @throws IllegalArgumentException se {@code track} for nula.
+     */
+    public TrackItem(Track track) {
+        if (track == null) {
+            throw new IllegalArgumentException("A faixa não pode ser nula.");
+        }
+        this.track = track;
+    }
 
-  @Override
-  public String getName() {
-    throw new UnsupportedOperationException("Exercício 1: implemente TrackItem.getName");
-  }
+    /**
+     * Devolve a faixa envolvida por esta folha.
+     *
+     * @return a faixa original.
+     */
+    public Track getTrack() {
+        return track;
+    }
 
-  @Override
-  public int getDurationSeconds() {
-    throw new UnsupportedOperationException("Exercício 1: implemente TrackItem.getDurationSeconds");
-  }
+    @Override
+    public String getName() {
+        return track.title();
+    }
 
-  @Override
-  public int getTrackCount() {
-    throw new UnsupportedOperationException("Exercício 1: implemente TrackItem.getTrackCount");
-  }
+    @Override
+    public int getDurationSeconds() {
+        return track.durationSeconds();
+    }
 
-  @Override
-  public List<Track> flatten() {
-    throw new UnsupportedOperationException("Exercício 1: implemente TrackItem.flatten");
-  }
+    @Override
+    public int getTrackCount() {
+        return 1;
+    }
+
+    @Override
+    public List<Track> flatten() {
+        return List.of(track);
+    }
 }
