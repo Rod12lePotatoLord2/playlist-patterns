@@ -1,28 +1,36 @@
 package com.playlist.decorator;
 
-/**
- * Efeito que multiplica o volume das amostras, com corte em {@code [-1.0, 1.0]}.
- */
+import java.util.Locale;
+
 public final class VolumeEffect extends AudioEffect {
 
-  /**
-   * Cria o efeito de volume.
-   *
-   * @param wrapped áudio decorado.
-   * @param factor fator multiplicador do volume.
-   */
-  public VolumeEffect(AudioTrack wrapped, double factor) {
-    super(wrapped);
-    throw new UnsupportedOperationException("Exercício 4: implemente o construtor de VolumeEffect");
-  }
+    private final double factor;
 
-  @Override
-  protected String describe() {
-    throw new UnsupportedOperationException("Exercício 4: implemente VolumeEffect.describe");
-  }
+    public VolumeEffect(AudioTrack wrapped, double factor) {
+        super(wrapped);
+        if (factor < 0) {
+            throw new IllegalArgumentException("O fator de volume não pode ser negativo.");
+        }
+        this.factor = factor;
+    }
 
-  @Override
-  public double[] getSamples() {
-    throw new UnsupportedOperationException("Exercício 4: implemente VolumeEffect.getSamples");
-  }
+    @Override
+    protected String describe() {
+        return String.format(Locale.US, "volume(%.1f)", factor);
+    }
+
+    @Override
+    public double[] getSamples() {
+        double[] original = wrapped.getSamples();
+        double[] result = new double[original.length];
+
+        for (int i = 0; i < original.length; i++) {
+            double val = original[i] * factor;
+            if (val > 1.0) val = 1.0;
+            if (val < -1.0) val = -1.0;
+            result[i] = val;
+        }
+
+        return result;
+    }
 }

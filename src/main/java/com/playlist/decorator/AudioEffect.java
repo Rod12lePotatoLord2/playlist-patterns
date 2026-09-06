@@ -5,35 +5,28 @@ package com.playlist.decorator;
  */
 public abstract class AudioEffect implements AudioTrack {
 
-  /**
-   * O áudio decorado por este efeito.
-   */
-  protected final AudioTrack wrapped;
+    protected final AudioTrack wrapped;
 
-  /**
-   * Guarda o áudio que será decorado.
-   *
-   * @param wrapped áudio decorado. Não pode ser nulo.
-   * @throws IllegalArgumentException se {@code wrapped} for nulo.
-   */
-  protected AudioEffect(AudioTrack wrapped) {
-    throw new UnsupportedOperationException("Exercício 4: implemente o construtor de AudioEffect");
-  }
+    protected AudioEffect(AudioTrack wrapped) {
+        if (wrapped == null) {
+            throw new IllegalArgumentException("O áudio decorado não pode ser nulo.");
+        }
+        this.wrapped = wrapped;
+    }
 
-  /**
-   * Nome do efeito, já formatado, usado na cadeia de efeitos.
-   *
-   * @return por exemplo {@code "volume(2.0)"}.
-   */
-  protected abstract String describe();
+    protected abstract String describe();
 
-  @Override
-  public String getTitle() {
-    throw new UnsupportedOperationException("Exercício 4: implemente AudioEffect.getTitle");
-  }
+    @Override
+    public String getTitle() {
+        return wrapped.getTitle();
+    }
 
-  @Override
-  public String getEffectChain() {
-    throw new UnsupportedOperationException("Exercício 4: implemente AudioEffect.getEffectChain");
-  }
+    @Override
+    public String getEffectChain() {
+        String baseChain = wrapped.getEffectChain();
+        if (baseChain == null || baseChain.isBlank() || "raw".equalsIgnoreCase(baseChain)) {
+            return describe();
+        }
+        return baseChain + " -> " + describe();
+    }
 }
